@@ -1,0 +1,16 @@
+/*
+Theme Name: Twenty Twenty-Five - Child
+Theme URI: 你的主题网站（可选）
+Description: 这个文件是子主题的核心，是一个独立的主题。
+Author: Tester
+Author URI: 你的网站（可选）
+Template: twentytwentyfive
+Version: 1.0.0
+*/
+
+.wp-block-group.my-custom-box {
+    background-color: #a5f4cb;
+    border: 2px solid #333;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
