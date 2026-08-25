@@ -3431,6 +3431,7 @@ function wp_footer() {
 
 /**
  * Fires the wp_body_open action.
+ * 触发一个名为 wp_body_open 的动作,插件或主题开发者就可以通过这个钩子来注入代码
  *
  * See {@see 'wp_body_open'}.
  *
@@ -4788,7 +4789,16 @@ function get_language_attributes( $doctype = 'html' ) {
  * @param string $doctype Optional. The type of HTML document. Accepts 'xhtml' or 'html'. Default 'html'.
  */
 function language_attributes( $doctype = 'html' ) {
+	// error_log('语言属性: ' . get_language_attributes());
+
+	// $lang_code = get_bloginfo('language'); 
+	// error_log('语言代码(不带 lang= 前缀): ' . $lang_code);
+
+	// $locale = get_locale();
+	// error_log('语言代码(WordPress 内部语言代码): ' . $locale);
+
 	echo get_language_attributes( $doctype );
+	
 }
 
 /**

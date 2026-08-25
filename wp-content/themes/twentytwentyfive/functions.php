@@ -9,6 +9,36 @@
  * @since Twenty Twenty-Five 1.0
  */
 
+// add_filter('template_include', function($template) {
+//     error_log('=== 最终使用的模板文件 ===');
+//     error_log($template);
+//     return $template;
+// });
+
+/**
+ * 如果主题需要兼容 WordPress 5.2 以下的旧版本，直接使用 wp_body_open() 会导致致命错误
+ * 添加一个后备函数
+ */
+if ( ! function_exists( 'wp_body_open' ) ) {
+    function wp_body_open() {
+        do_action( 'wp_body_open' );
+    }
+}
+/**
+ * 加载页面过程,触发名为 wp_body_open 的动作
+ * 
+ */
+add_action( 'wp_body_open', 'my_custom_function' );
+function my_custom_function() {
+	// error_log('=== 可加载自定义内容: ===' . PHP_EOL . 
+	// 	'1.注入第三方脚本：这是最常见的用途，例如Google Analytics（谷歌分析）、Facebook Pixel（脸书像素） 等需要尽早加载的追踪代码。' . PHP_EOL . 
+	// 	'2.添加加载动画（Preloader）：许多主题会利用这个钩子在页面内容加载前显示一个加载动画' . PHP_EOL .
+	// 	'3.插入提示条或通知横幅：可以在页面最顶部显示 Cookie 许可、促销通知等全局信息' . PHP_EOL .
+	// 	'4.实现“跳过导航”链接：方便无障碍访问'
+	// 	);
+    // echo '<div>我的自定义内容</div>';
+}
+
 if ( ! function_exists( 'twentytwentyfive_post_format_setup' ) ) :
 	/**
 	 * Adds theme support for post formats.
