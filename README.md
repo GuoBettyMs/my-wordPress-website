@@ -1,4 +1,4 @@
-# my-wordPress-website
+## my-wordPress-website
 使用 Studio 在本地部署 WordPress 
 
 第1步：下载与安装
@@ -6,7 +6,7 @@
 选择并下载：根据操作系统（macOS），点击对应的下载按钮。
 安装程序：下载完成后，运行安装文件。根据屏幕提示完成安装即可。
 
-🚀 第2步：创建第一个本地站点
+第2步：创建第一个本地站点
 启动 Studio：安装完成后，打开 Studio 应用程序。
 添加新站点：在主界面，点击左下角的 “Add Site”（添加站点）按钮。
 
@@ -84,19 +84,14 @@ WP Admin：点击此按钮，会直接在浏览器中打开本地网站的 WordP
 在 wp-blog-header.php 文件中
 在代码行的行号上 右键，选择 “添加日志点”（Add Logpoint）。
 在输入框中填写：
-
 "=== 进入 wp-blog-header.php ==="
-当前值: {$wp_did_header}
-当前值: { var_export($wp_did_header, true) } 
+当前值: {$wp_did_header}    // 插入变量
+当前值: { var_export($wp_did_header, true) }  //显示布尔值原文
 
 日志点会显示为一个菱形图标，执行到该行时，信息会输出到 VS Code 的 Debug Console，而不会中断程序。
-日志点可以包含表达式.
-使用 { } 插入变量
-使用 var_export 显示布尔值原文
 
 2. 使用 Studio 的调试日志
-注: WordPress 的错误日志处理系统（wp_debug_mode()）是在 wp-settings.php 中才被初始化的
-将以下代码添加到主题文件夹下的 functions.php 文件中：
+注: WordPress 的错误日志处理系统（wp_debug_mode()）是在 wp-settings.php 中才被初始化的,将以下代码添加到主题文件夹下的 functions.php 文件中：
 add_filter('template_include', function($template) {
     error_log('=== 最终使用的模板文件 ===');
     error_log($template);
@@ -105,10 +100,8 @@ add_filter('template_include', function($template) {
 然后刷新页面，查看 Studio 的调试日志（wp-content/debug.log）或 VS Code 的 Debug Console（如果设置了日志点），就会看到类似这样的输出：
 /xxxx/wp-content/themes/twentytwentyfive/single.html
 
-
 #### 确定 pathMappings 实际路径
-在站点根目录创建一个 info.php，内容为：
-<?php phpinfo();
+在站点根目录创建一个 info.php，内容为：<?php phpinfo();    
 然后在浏览器访问 http://localhost:xxxx/info.php，查找 DOCUMENT_ROOT 的值。这个值就是服务器上的实际根目录路径
 假设 DOCUMENT_ROOT 显示为 /app，那么映射应改为：
 "pathMappings": {
