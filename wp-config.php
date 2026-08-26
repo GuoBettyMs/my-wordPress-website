@@ -101,5 +101,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	define( 'ABSPATH', __DIR__ . '/' );
 }
 
+// 通过常量控制是否启用调试日志，避免生产环境产生过多文件
+define( 'WP_DEBUG_LOG_CUSTOM', true );
+
 /** Sets up WordPress vars and included files. */
 require_once ABSPATH . 'wp-settings.php';
