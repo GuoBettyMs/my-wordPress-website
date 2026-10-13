@@ -1,17 +1,12 @@
 <!-- 区块标记, 引用一个名为 header 的 模板部件（Template Part）,在 parts/ 目录下查找 header.html 文件，并将其内容插入到此位置 -->
 <!-- wp:template-part {"slug":"header"} /-->
 
-<!-- wp:group 创建一个组块（Group Block），tagName: "main"：生成的 HTML 标签为 <main>, 
-	相当于解释 <main> 这个容器的类选择器是 wp-block-group, 且元素样式为顶部外边距 60px
--->
 <!-- wp:group {"tagName":"main","style":{"spacing":{"margin":{"top":"var:preset|spacing|60"}}},"layout":{"type":"constrained"}} -->
 <main class="wp-block-group" style="margin-top:var(--wp--preset--spacing--60)">
-	<!-- 插入一个页面标题模式, 在主题的 patterns/ 目录下查找对应的 .php 文件 -->
 	<!-- wp:pattern {"slug":"twentytwentyfive/hidden-blog-heading"} /-->
-	<!-- 插入一个查询循环（Query Loop） 模式，用于显示文章列表, 在主题的 patterns/ 目录下查找对应的文件 -->
 	<!-- wp:pattern {"slug":"twentytwentyfive/template-query-loop"} /-->
 </main>
-<!-- 关闭 group 标签 -->
-<!-- /wp:group --> 
+<!-- /wp:group -->
 
 <!-- wp:template-part {"slug":"footer"} /-->
+

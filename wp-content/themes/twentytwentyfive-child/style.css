@@ -6,11 +6,39 @@ Author: Tester
 Author URI: 你的网站（可选）
 Template: twentytwentyfive
 Version: 1.0.0
+Text Domain: twentytwentyfive-child
+Domain Path: /languages
 */
 
-.wp-block-group.my-custom-box {
-    background-color: #a5f4cb;
-    border: 2px solid #333;
-    padding: 20px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+/* 自定义语言切换器样式*/
+.custom-lang-switcher select {
+    border: none !important;          /* 去掉边框,!important 可覆盖主题默认样式 */
+    font-size: 20px;                 /* 放大字号 */
+    padding: 5px 10px;               /* 增加内边距，方便点击 */
+    background: transparent;          /* 透明背景 */
+    outline: none;                   /* 去掉焦点框 */
+    cursor: pointer;
+    color: #333;
+}
+
+/* 首页的 tab-list 去掉焦点框 */
+.wp-block-tab-list button {
+    outline: none;
+}
+
+.wp-block-tab-panel {
+    display: none;
+}
+.wp-block-tab-panel.is-active {
+    display: block;
+}
+
+/* 默认状态的 tab 按钮样式 */
+.wp-block-tab-list button[role="tab"] {
+    background: transparent; 
+}
+
+/* 激活状态的 tab 按钮样式 */
+.wp-block-tab-list button[role="tab"].is-active {
+    background: #09e79d;
 }

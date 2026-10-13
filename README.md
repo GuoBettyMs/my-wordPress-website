@@ -109,3 +109,43 @@ add_filter('template_include', function($template) {
 }
 若路径不对,将无法开启调试功能。
 
+
+<!-- wp:group {"style":{"spacing":{"padding":{"right":"var:preset|spacing|50","left":"var:preset|spacing|50"}}},"backgroundColor":"accent-2","layout":{"type":"default"}} -->
+<div class="wp-block-group has-accent-2-background-color has-background" style="padding-right:var(--wp--preset--spacing--50);padding-left:var(--wp--preset--spacing--50)"><!-- wp:tabs {"backgroundColor":"accent-5"} -->
+<div class="wp-block-tabs has-accent-5-background-color has-background"><!-- wp:tab-list -->
+<div role="tablist" class="wp-block-tab-list"><button type="button" role="tab">8月</button><button type="button" role="tab">7月</button></div>
+<!-- /wp:tab-list -->
+
+<!-- wp:tab-panels -->
+<div class="wp-block-tab-panels"><!-- wp:tab-panel {"label":"8月","layout":{"type":"default"}} -->
+<section role="tabpanel" tabindex="0" class="wp-block-tab-panel"><!-- wp:query {"queryId":10,"query":{"perPage":10,"pages":0,"offset":0,"postType":"post","order":"desc","orderBy":"date","author":"","search":"","exclude":[],"sticky":"","inherit":false,"excludeCurrent":null,"taxQuery":{"include":{"category":[42]}}},"metadata":{"categories":["posts"],"patternName":"core/query-medium-posts","name":"图片在左"}} -->
+<div class="wp-block-query"><!-- wp:post-template -->
+<!-- wp:group {"layout":{"type":"constrained","justifyContent":"left"}} -->
+<div class="wp-block-group"><!-- wp:post-title {"isLink":true,"fontSize":"large"} /-->
+
+<!-- wp:post-excerpt {"fontSize":"medium"} /-->
+
+<!-- wp:post-date {"metadata":{"bindings":{"datetime":{"source":"core/post-data","args":{"field":"date"}}}}} /--></div>
+<!-- /wp:group -->
+<!-- /wp:post-template --></div>
+<!-- /wp:query --></section>
+<!-- /wp:tab-panel -->
+
+<!-- wp:tab-panel {"label":"7月"} -->
+<section role="tabpanel" tabindex="0" class="wp-block-tab-panel"><!-- wp:query {"queryId":20,"query":{"perPage":10,"pages":0,"offset":0,"postType":"post","order":"desc","orderBy":"date","author":"","search":"","exclude":[],"sticky":"","inherit":false,"excludeCurrent":null,"taxQuery":{"include":{"category":[44]}}},"metadata":{"categories":["posts"],"patternName":"core/query-medium-posts","name":"图片在左"}} -->
+<div class="wp-block-query"><!-- wp:post-template -->
+<!-- wp:group {"layout":{"type":"constrained","justifyContent":"left"}} -->
+<div class="wp-block-group"><!-- wp:post-title {"isLink":true,"fontSize":"large"} /-->
+
+<!-- wp:post-excerpt {"fontSize":"medium"} /-->
+
+<!-- wp:post-date {"metadata":{"bindings":{"datetime":{"source":"core/post-data","args":{"field":"date"}}}}} /--></div>
+<!-- /wp:group -->
+<!-- /wp:post-template --></div>
+<!-- /wp:query --></section>
+<!-- /wp:tab-panel --></div>
+<!-- /wp:tab-panels --></div>
+<!-- /wp:tabs --></div>
+<!-- /wp:group -->
+
+

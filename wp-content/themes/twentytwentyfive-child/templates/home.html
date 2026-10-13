@@ -1,41 +1,31 @@
-<!-- wp:template-part {"slug":"header"} /-->
+<!-- wp:group {"align":"full","layout":{"type":"constrained"}} -->
+<div class="wp-block-group alignfull"><!-- wp:group {"metadata":{"categories":["header"],"patternName":"twentytwentyfive/header","name":"Header"},"align":"full","className":"is-style-default","style":{"elements":{"link":{"color":{"text":"var:preset|color|contrast"}}}},"textColor":"contrast","layout":{"type":"constrained"}} -->
+<div class="wp-block-group alignfull is-style-default has-contrast-color has-text-color has-link-color"><!-- wp:group {"align":"wide","style":{"spacing":{"padding":{"top":"var:preset|spacing|30","bottom":"var:preset|spacing|30"}}},"layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"space-between"}} -->
+<div class="wp-block-group alignwide" style="padding-top:var(--wp--preset--spacing--30);padding-bottom:var(--wp--preset--spacing--30)"><!-- wp:site-title {"level":0} /-->
 
-<!-- wp:group {"tagName":"main","style":{"spacing":{"margin":{"top":"var:preset|spacing|60"}}},"layout":{"type":"constrained"}} -->
-<main class="wp-block-group" style="margin-top:var(--wp--preset--spacing--60)"><!-- wp:heading {"level":1,"metadata":{"patternName":"twentytwentyfive/hidden-blog-heading","name":"隐藏的博客标题","description":"隐藏首页标题和索引模板。"},"style":{"typography":{"textAlign":"left"}}} -->
-<h1 class="wp-block-heading has-text-align-left">首页博客</h1>
-<!-- /wp:heading -->
-
-<!-- wp:query {"queryId":0,"query":{"perPage":10,"pages":0,"offset":0,"postType":"post","order":"desc","orderBy":"date","author":"","search":"","exclude":[],"sticky":"","inherit":true,"taxQuery":null,"parents":[],"excludeCurrent":null},"metadata":{"patternName":"twentytwentyfive/template-query-loop","name":"职位列表，1 栏","description":"一个列表文章，1 栏，有特色图片和文章日期。","categories":["query"]},"align":"full","layout":{"type":"default"}} -->
-<div class="wp-block-query alignfull"><!-- wp:post-template {"align":"full","layout":{"type":"default"}} -->
-<!-- wp:group {"align":"full","style":{"spacing":{"padding":{"top":"var:preset|spacing|60","bottom":"var:preset|spacing|60"}}},"layout":{"type":"constrained"}} -->
-<div class="wp-block-group alignfull" style="padding-top:var(--wp--preset--spacing--60);padding-bottom:var(--wp--preset--spacing--60)"><!-- wp:post-featured-image {"isLink":true,"aspectRatio":"3/2"} /-->
-
-<!-- wp:post-title {"isLink":true,"fontSize":"x-large"} /-->
-
-<!-- wp:post-content {"align":"full","fontSize":"medium","layout":{"type":"constrained"}} /-->
-
-<!-- wp:post-date {"isLink":true,"metadata":{"bindings":{"datetime":{"source":"core/post-data","args":{"field":"date"}}}},"style":{"spacing":{"margin":{"top":"var:preset|spacing|40"}}},"fontSize":"small"} /--></div>
-<!-- /wp:group -->
-<!-- /wp:post-template -->
-
-<!-- wp:group {"style":{"spacing":{"padding":{"top":"var:preset|spacing|60","bottom":"var:preset|spacing|60"}}},"layout":{"type":"constrained"}} -->
-<div class="wp-block-group" style="padding-top:var(--wp--preset--spacing--60);padding-bottom:var(--wp--preset--spacing--60)"><!-- wp:query-no-results -->
-<!-- wp:paragraph -->
-<p>抱歉，未找到任何内容。请尝试使用不同的关键字进行搜索。</p>
-<!-- /wp:paragraph -->
-<!-- /wp:query-no-results --></div>
+<!-- wp:group {"style":{"spacing":{"blockGap":"var:preset|spacing|10"}},"layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"right"}} -->
+<div class="wp-block-group"><!-- wp:navigation {"ref":4,"overlayBackgroundColor":"base","overlayTextColor":"contrast","layout":{"type":"flex","justifyContent":"right","flexWrap":"wrap"}} /--></div>
 <!-- /wp:group -->
 
-<!-- wp:group {"align":"wide","layout":{"type":"constrained"}} -->
-<div class="wp-block-group alignwide"><!-- wp:query-pagination {"paginationArrow":"arrow","align":"wide","layout":{"type":"flex","justifyContent":"space-between"}} -->
-<!-- wp:query-pagination-previous /-->
-
-<!-- wp:query-pagination-numbers /-->
-
-<!-- wp:query-pagination-next /-->
-<!-- /wp:query-pagination --></div>
+<!-- wp:shortcode -->
+[custom_lang_switcher]
+<!-- /wp:shortcode --></div>
 <!-- /wp:group --></div>
-<!-- /wp:query --></main>
+<!-- /wp:group --></div>
 <!-- /wp:group -->
 
-<!-- wp:template-part {"slug":"footer"} /-->
+<!-- wp:separator {"style":{"spacing":{"margin":{"top":"0"}}}} -->
+<hr class="wp-block-separator has-alpha-channel-opacity" style="margin-top:0"/>
+<!-- /wp:separator -->
+
+<!-- wp:shortcode -->
+[monthly_posts_tabs]
+<!-- /wp:shortcode -->
+ 
+<!-- wp:group {"style":{"spacing":{"padding":{"left":"var:preset|spacing|50","right":"var:preset|spacing|50"}}},"backgroundColor":"accent-2","layout":{"type":"flex","flexWrap":"nowrap"}} -->
+<div class="wp-block-group has-accent-2-background-color has-background" style="padding-right:var(--wp--preset--spacing--50);padding-left:var(--wp--preset--spacing--50)"><!-- wp:media-text {"mediaId":104,"mediaLink":"http://localhost:8883/sample-page-zh/botany-flowers-closeup/","linkDestination":"none","mediaType":"image","verticalAlignment":"center","style":{"spacing":{"padding":{"left":"0","right":"0"}}},"backgroundColor":"accent-5"} -->
+<div class="wp-block-media-text is-stacked-on-mobile is-vertically-aligned-center has-accent-5-background-color has-background" style="padding-right:0;padding-left:0"><figure class="wp-block-media-text__media"><img src="http://localhost:8883/wp-content/uploads/2026/08/botany-flowers-closeup-1024x681.webp" alt="" class="wp-image-104 size-full"/></figure><div class="wp-block-media-text__content"><!-- wp:archives {"showPostCounts":true,"align":"center"} /--></div></div>
+<!-- /wp:media-text --></div>
+<!-- /wp:group -->
+
+<!-- wp:template-part {"slug":"footer","area":"footer"} /-->
