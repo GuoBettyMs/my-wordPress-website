@@ -207,8 +207,15 @@ function monthly_posts_tabs_shortcode( $atts ) {
         /** 假设分类名称格式为 "26.08" -> 标签 "8月" */ 
         if ( preg_match( '/\d+\.(\d{2})$/', $term->name, $m ) ) {
             $month_num = intval( $m[1] );
+
+            // 用日期本地化生成月份名
+            if ( strpos( get_locale(), 'en' ) === 0 ) {
+                $month_label = wp_date( 'F', mktime( 0, 0, 0, $month_num, 1, 2000 ) );
+            } else {
+                $month_label =$month_num . '月';
+            }
             $tabs[] = array(
-                'label'   => $month_num . '月',
+                'label'   => $month_label,
                 'id'      => 'tab-' . $term->term_id,
                 'panel_id'=> 'panel-' . $term->term_id,
                 'cat_id'  => $term->term_id,
@@ -222,7 +229,7 @@ function monthly_posts_tabs_shortcode( $atts ) {
 
     ob_start();
     ?>
-
+    
     <!-- <div class="wp-block-tab-list" role="tablist">                 =>  Tab 切换按钮组 
         <button type="button" role="tab"                                => 标识为 Tab 按钮, 防止被当成表单提交按钮
         id="... $tab['id'] .."                                          => 唯一 ID ,对应后面 panel 的 aria-labelledby
@@ -230,129 +237,140 @@ function monthly_posts_tabs_shortcode( $atts ) {
         echo $i === 0 ? 'aria-selected="true" class="is-active"' : ''   => 默认激活并高亮显示第0个
         echo esc_html( $tab['label'] )                                  => 输出显示 tab 文本
     -->
-    <div class="wp-block-tabs">
-        <div class="wp-block-tab-list" role="tablist">
-            <?php foreach ( $tabs as $i => $tab ) : ?>
-                <button type="button" role="tab"
-                        id="<?php echo esc_attr( $tab['id'] ); ?>"
-                        aria-controls="<?php echo esc_attr( $tab['panel_id'] ); ?>"
-                    <?php echo $i === 0 ? 'aria-selected="true" class="is-active"' : ''; ?>>
-                    <?php echo esc_html( $tab['label'] ); ?>
-                </button>
-            <?php endforeach; ?>
-        </div>
+    <div class="wp-block-group has-accent-2-background-color has-background"
+        style="padding-right:var(--wp--preset--spacing--50);padding-left:var(--wp--preset--spacing--50)">
+        <div class="wp-block-tabs has-accent-5-background-color has-background">
+            <!-- Tab 按钮 -->
+            <div class="wp-block-tab-list" role="tablist">
+                <?php foreach ( $tabs as $i => $tab ) : ?> 
+                    <button type="button" role="tab"
+                            id="<?php echo esc_attr( $tab['id'] ); ?>"
+                            aria-controls="<?php echo esc_attr( $tab['panel_id'] ); ?>"
+                        <?php echo $i === 0 ? 'aria-selected="true" class="is-active"' : ''; ?>
+                    ><?php echo esc_html( $tab['label'] ); ?> 
+                    </button>
+                <?php endforeach; ?> 
+            </div>
+            <!-- Tab 面板 --><!-- 全局去重数组 --><?php static $seen_ids = array(); ?>
+            <div class="wp-block-tab-panels">
+                <?php foreach ( $tabs as $i => $tab ) : ?>
+                    <section role="tabpanel"
+                            id="<?php echo esc_attr( $tab['panel_id'] ); ?>"
+                            aria-labelledby="<?php echo esc_attr( $tab['id'] ); ?>"
+                            tabindex="0"
+                            class="wp-block-tab-panel <?php echo $i === 0 ? 'is-active' : ''; ?>">
 
-        <!-- 全局去重数组 -->
-        <?php static $seen_ids = array(); ?>
-
-        <!-- <div class="wp-block-tab-panels">          =>  Tab 内容面板组
-            <section role="tabpanel"                    => 标识为 Tab 内容面板
-            id="... $tab['panel_id'] .."                => 面板的唯一 ID，对应按钮上的 aria-controls
-            aria-labelledby="... $tab['id'] ... >"      => 声明这个面板"被哪个按钮标注"，值是按钮的 ID。
-            echo $i === 0 ? 'is-active' : ''            => 默认激活显示第0个
-            echo esc_html( $tab['label'] )              => 输出显示 tab 文本
-        -->
-        <div class="wp-block-tab-panels">
-            <?php foreach ( $tabs as $i => $tab ) : ?>
-                <section role="tabpanel"
-                         id="<?php echo esc_attr( $tab['panel_id'] ); ?>"
-                         aria-labelledby="<?php echo esc_attr( $tab['id'] ); ?>"
-                         tabindex="0"
-                         class="wp-block-tab-panel <?php echo $i === 0 ? 'is-active' : ''; ?>">
-                    <?php
-                        global $post;
-                        $original_post = $post;
-
-                        /**
-                         * tax_query + field => term_id	    明确按当前子分类 ID 查询
-                         * include_children => false	    避免再带出更下层的子分类文章
-                         * lang => $current_lang	        限制只查当前语言的文章
-                         * posts_per_page => 10	            保持每个 Tab 最多 10 篇
-                         * lang => $current_lang           当前语言限制
-                         */
-                        $posts = get_posts( array(
-                            'post_type'      => 'post',
-                            'post_status'    => 'publish',
-                            'posts_per_page' => 10,
-                            'orderby'        => 'date',
-                            'order'          => 'DESC',
-                            'tax_query'      => array(
-                                array(
-                                    'taxonomy'         => 'category',
-                                    'field'            => 'term_id',
-                                    'terms'            => array( $tab['cat_id'] ),
-                                    'include_children' => false,
-                                ),
-                            ),
-                            'lang'             => $current_lang,
-                        ) );
-
-                        /**
-                         * 单 Tab 内部按 “标题 + 内容前 30 字”去重
-                         * 若是采集、导入、误操作产生的重复文章，建议在后台或数据库里清理，而不是每次查询都过滤。
-                         * 比较安全的方式是用插件，比如 Delete Duplicate Posts，可以按标题扫描，保留最早或最新的一篇，再批量删除重复项
-                         */
-                        $unique = array();
-                        foreach ( $posts as $p ) {
-                            $key = md5( $p->post_title . wp_trim_words( $p->post_content, 30, '' ) );
-                            if ( ! isset( $unique[ $key ] ) ) {
-                                $unique[ $key ] = $p;
-                                continue;
-                            }
-                            /** 已经存在相同内容时，保留 ID 更大的那篇，通常就是最新的一篇 */
-                            if ( $p->ID > $unique[ $key ]->ID ) { 
-                                $unique[ $key ] = $p; 
-                            }
-                        }
-                        $posts = array_values( $unique );
-
-                        /** 跨 Tab 按 ID 去重 */
-                        if ( $posts ) {
-                            foreach ( $posts as $key => $p ) {
-                                if ( isset( $seen_ids[ $p->ID ] ) ) {
-                                    unset( $posts[ $key ] );
-                                    continue;
-                                }
-                                $seen_ids[ $p->ID ] = true;
-                            }
-                            /** 重新索引，避免 foreach 时 key 断裂 */
-                            $posts = array_values( $posts );
-                        }
-
-                        /** 输出搜索结果 */
-                        if ( $posts ) :
-                            echo '<ul class="monthly-posts-list">';
-                            foreach ( $posts as $post ) :
-                                setup_postdata( $post );
-                                ?>
-                                <li>
-                                    <!-- 调试用
-                                    确认每篇 ID 不同,如果 ID 都不同，说明查询没问题，只是显示出了问题
-                                    <small>ID: <?php echo $post->ID; ?></small>
-                                    -->
-                                    <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-
-                                    <!-- get_the_date(): 每次都会返回当前文章的日期，不受"同一天只输出一次"的限制 -->
-                                    <span class="post-date"><?php echo get_the_date(); ?></span>
-
-                                    <!-- 自动截取正文前 50 字 -->
-                                    <p class="post-excerpt"><?php echo wp_trim_words( get_the_excerpt(), 50 ); ?></p>
-                                </li>
+                        <ul class="monthly-posts-list">
                             <?php
-                            endforeach;
-                            wp_reset_postdata();
-                            $post = $original_post;
-                            echo '</ul>';
-                        else :
-                            echo '<p>' . __( '暂无文章', 'textdomain' ) . '</p>';
-                        endif;
-                    ?>
-                </section>
-            <?php endforeach; ?>
+                                global $post;
+                                $original_post = $post;
+
+                                /**
+                                 * tax_query + field => term_id	    明确按当前子分类 ID 查询
+                                 * include_children => false	    避免再带出更下层的子分类文章
+                                 * lang => $current_lang	        限制只查当前语言的文章
+                                 * posts_per_page => 10	            保持每个 Tab 最多 10 篇
+                                 * lang => $current_lang           当前语言限制
+                                 */
+                                $posts = get_posts( array(
+                                    'post_type'      => 'post',
+                                    'post_status'    => 'publish',
+                                    'posts_per_page' => 10,
+                                    'orderby'        => 'date',
+                                    'order'          => 'DESC',
+                                    'tax_query'      => array(
+                                        array(
+                                            'taxonomy'         => 'category',
+                                            'field'            => 'term_id',
+                                            'terms'            => array( $tab['cat_id'] ),
+                                            'include_children' => false,
+                                        ),
+                                    ),
+                                    'lang'             => $current_lang,
+                                ) );
+
+                                /**
+                                 * 单 Tab 内部按 “标题 + 内容前 30 字”去重
+                                 * 若是采集、导入、误操作产生的重复文章，建议在后台或数据库里清理，而不是每次查询都过滤。
+                                 * 比较安全的方式是用插件，比如 Delete Duplicate Posts，可以按标题扫描，保留最早或最新的一篇，再批量删除重复项
+                                 */
+                                $unique = array();
+                                foreach ( $posts as $p ) {
+                                    $key = md5( $p->post_title . wp_trim_words( $p->post_content, 30, '' ) );
+                                    if ( ! isset( $unique[ $key ] ) ) {
+                                        $unique[ $key ] = $p;
+                                        continue;
+                                    }
+                                    /** 已经存在相同内容时，保留 ID 更大的那篇，通常就是最新的一篇 */
+                                    if ( $p->ID > $unique[ $key ]->ID ) { 
+                                        $unique[ $key ] = $p; 
+                                    }
+                                }
+                                $posts = array_values( $unique );
+
+                                /** 跨 Tab 按 ID 去重 */
+                                if ( $posts ) {
+                                    foreach ( $posts as $key => $p ) {
+                                        if ( isset( $seen_ids[ $p->ID ] ) ) {
+                                            unset( $posts[ $key ] );
+                                            continue;
+                                        }
+                                        $seen_ids[ $p->ID ] = true;
+                                    }
+                                    /** 重新索引，避免 foreach 时 key 断裂 */
+                                    $posts = array_values( $posts );
+                                }
+
+                                /** 输出搜索结果 */
+                                if ( $posts ) :
+                                    foreach ( $posts as $post ) :
+                                        setup_postdata( $post );
+                                        ?>
+                                        <li>
+                                            <div class="wp-block-group" style="display:flex;gap:1rem;align-items:flex-start;">
+                                                <!-- 如果有特色图 -->
+                                                <?php if ( has_post_thumbnail( $post ) ) : ?>
+                                                    <div style="flex:0 0 120px;">
+                                                        <?php echo get_the_post_thumbnail( $post, 'medium' ); ?>
+                                                    </div>
+                                                <?php endif; ?>
+                                                <div style="flex:1;">
+                                                    <!-- 调试用,确认每篇 ID 不同,如果 ID 都不同，说明查询没问题，只是显示出了问题
+                                                        <small>ID: <?php echo $post->ID; ?></small>-->
+                                                    <h3 class="has-large-font-size"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
+                                                    <p class="has-medium-font-size"><!-- 自动截取正文前 50 字 --><?php echo wp_trim_words( get_the_excerpt(), 50 ); ?></p>
+                                                    <time class="has-medium-font-size"><!-- get_the_date(): 每次都会返回当前文章的日期，不受"同一天只输出一次"的限制 --><?php echo get_the_date( '', $post ); ?></time>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    <?php
+                                    endforeach;
+                                    wp_reset_postdata();
+                                    $post = $original_post;
+                                else :
+                                    ?>
+                                    <div style="flex:1;">
+                                        <?php echo '<p>' . esc_html__( 'No articles available.', 'twentytwentyfive-child' ) . '</p>'; ?>
+                                    </div>
+                                <?php
+                                endif;
+                            ?>
+                        </ul>
+                    </section>
+                <?php endforeach; ?>
+            </div>
         </div>
     </div>
+    
     <?php
-    return ob_get_clean();
+    $output = ob_get_clean();
+
+    /** 去掉 wpautop 可能塞进来的空段落和多余换行 */
+    $output = preg_replace( '#<p>\s*</p>#', '', $output );
+    $output = str_replace( array( "\r\n", "\r" ), "\n", $output );
+    $output = preg_replace( "#\n\s*\n#", "\n", $output );
+    
+    return $output;
 }
 
 
@@ -395,11 +413,26 @@ add_shortcode('blog_heading', function() {
 });
 
 
-add_action('init', function() {
-    // Polylang 中注册字符串,pll_register_string() 函数参数: 一个唯一的名称、要翻译的原文，以及一个分组名称（用于在界面中归类）
-    pll_register_string('blog_heading', '首页博客', 'My Theme');
+/** 
+ * 使用后台 Loco Translate 插件的翻译文本
+ */
+add_action( 'after_setup_theme', function () {
+    load_child_theme_textdomain(
+        'twentytwentyfive-child',
+        get_stylesheet_directory() . '/languages'
+    );
+} );
 
+add_action('init', function() {
+    // write_debug_log('--- init ---');
+    // write_debug_log('is_user_logged_in = ' . (is_user_logged_in() ? 'yes' : 'no'));
+    // write_debug_log('user ID = ' . get_current_user_id());
+    // write_debug_log('can manage_options = ' . (current_user_can('manage_options') ? 'yes' : 'no'));
+
+    /** Polylang 中注册字符串,pll_register_string() 函数参数: 一个唯一的名称、要翻译的原文，以及一个分组名称（用于在界面中归类）*/
+    pll_register_string('blog_heading', '首页博客', 'My Theme');
 });
+
 
 /**
  * 根据选项卡按钮文本,动态获取对应的分类名称（用于查询）

@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Twenty Twenty-Five - Child\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-08-27 10:29+0000\n"
-"PO-Revision-Date: 2026-08-27 10:30+0000\n"
+"PO-Revision-Date: 2026-10-14 10:17+0000\n"
 "Last-Translator: \n"
 "Language-Team: 简体中文\n"
 "Language: zh_CN\n"
@@ -35,7 +35,7 @@ msgstr ""
 
 #. Author of the theme
 msgid "Tester"
-msgstr ""
+msgstr "测试"
 
 #. Name of the theme
 msgid "Twenty Twenty-Five - Child"
@@ -44,3 +44,6 @@ msgstr ""
 #. Description of the theme
 msgid "这个文件是子主题的核心，是一个独立的主题。"
 msgstr ""
+
+msgid "No articles available."
+msgstr "暂无文章"

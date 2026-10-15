@@ -1,2 +1,0 @@
-<?php
-return ['project-id-version'=>'Twenty Twenty-Five - Child','report-msgid-bugs-to'=>'','pot-creation-date'=>'2026-08-27 10:29+0000','po-revision-date'=>'2026-08-27 10:30+0000','last-translator'=>'','language-team'=>'简体中文','language'=>'zh_CN','plural-forms'=>'nplurals=1; plural=0;','mime-version'=>'1.0','content-type'=>'text/plain; charset=UTF-8','content-transfer-encoding'=>'8bit','x-generator'=>'Loco https://localise.biz/','x-loco-version'=>'2.8.8; wp-7.1; php-8.4.24','x-domain'=>'twentytwentyfive-child','messages'=>[]];

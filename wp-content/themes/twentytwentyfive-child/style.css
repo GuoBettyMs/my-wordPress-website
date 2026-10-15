@@ -21,24 +21,54 @@ Domain Path: /languages
     color: #333;
 }
 
+/* .wp-site-blocks p:empty {
+    display: none;
+} */
+
+.wp-block-tabs {
+    border: 1px solid #e0e0e0;
+    background: #fff;
+}
+
+
+/* 用 CSS 兜底隐藏空段落 */
+.wp-block-tabs p:empty {
+    display: none;
+}
+
+.wp-block-tab-list {
+    display: flex;
+    gap: 0;
+}
+
 /* 首页的 tab-list 去掉焦点框 */
 .wp-block-tab-list button {
     outline: none;
 }
 
+/* 默认状态的 tab 按钮样式 */
+.wp-block-tab-list button[role="tab"] {
+    padding: 0.75rem 1rem;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 1.5rem;
+    color: #555;
+    height: fit-content;
+}
+
+
+/* 激活状态的 tab 按钮样式 */
+.wp-block-tab-list button[role="tab"].is-active,
+.wp-block-tab-list button[role="tab"][aria-selected="true"] {
+    border-bottom: 2px solid #555;
+    /* background: #22a102; */
+}
+
 .wp-block-tab-panel {
     display: none;
 }
+
 .wp-block-tab-panel.is-active {
     display: block;
-}
-
-/* 默认状态的 tab 按钮样式 */
-.wp-block-tab-list button[role="tab"] {
-    background: transparent; 
-}
-
-/* 激活状态的 tab 按钮样式 */
-.wp-block-tab-list button[role="tab"].is-active {
-    background: #09e79d;
 }
